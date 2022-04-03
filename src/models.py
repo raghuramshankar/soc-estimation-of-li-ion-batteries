@@ -62,7 +62,7 @@ class models:
         pPred = pPred - P_xy @ np.linalg.pinv(s) @ np.transpose(P_xy)
         return xPred, pPred
 
-    def cubature_kalman_filter(xEst, pEst, z):
+    def cubatureKalmanFilter(xEst, pEst, z):
         xPred, pPred = self.cubaturePrediction(xEst, pEst)
         # return xPred.astype(float), pPred.astype(float)
         x_upd, p_upd = self.cubatureUpdate(xPred, pPred, z)

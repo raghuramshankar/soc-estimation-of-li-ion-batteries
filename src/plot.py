@@ -43,11 +43,11 @@ class plot:
         plt.grid(True)
         plt.show()
 
-        def postpross(i, xEst, p_est, xEstCat, z, zCat, velCat, estVelCat, showAnimation, showEllipse, showFinalFlag):
-            if self.showAnimation == 1:
-                self.plotAnimation(i, xEstCat, z)
-                if self.showEllipse == 1:
-                    self.plotEllipse(xEst[0:2], p_est)
-            if self.showFinalFlag == 1:
-                # plot_final_3(xEstCat, zCat, velCat, estVelCat, i)
-                self.plotFinal(xEstCat, zCat)
+    def postpross(i, xEst, p_est, xEstCat, z, zCat, velCat, estVelCat, showAnimation, showEllipse, showFinalFlag):
+        if self.showAnimation == 1:
+            self.plotAnimation(i, xEstCat, z)
+            if self.showEllipse == 1:
+                self.plotEllipse(xEst[0:2], p_est)
+        if self.showFinalFlag == 1:
+            # plot_final_3(xEstCat, zCat, velCat, estVelCat, i)
+            self.plotFinal(xEstCat, zCat)
