@@ -1,7 +1,5 @@
 from src.runSOC import runSOC
 
-def main():
+if __name__ == '__main__':
     runSOCObj = runSOC()
-    runSOCObj.cubatureKalmanFilter(runSOCObj.xEst, runSOCObj.pEst, runSOCObj.z)
-
-main()
+    runSOCObj.mainloop()
