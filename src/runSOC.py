@@ -17,22 +17,22 @@ class runSOC(models, plot):
         self.p0 = np.array([[1e-3, 0.0],
                             [0.0, 1e-3]])
 
-        '''measurement noise'''
+        '''generate measurement noise'''
         self.zNoise = np.array([[1e-3]])                # current   [A]
 
         '''process noise'''
-        self.q = np.array([[1e-6, 0.0],
-                           [0.0, 1e-6]])
+        self.q = np.array([[1e-6, 0.0],                 # current    [A]
+                           [0.0, 1e-6]])                # SOC       [abs]
 
         '''measurement model matrix'''
-        self.hx = np.array([[1.0, 0.0],
-                            [0.0, 0.0]])
+        self.hx = np.array([[1.0, 0.0]])           # current    [A]
 
         '''measurement noise'''
-        self.r = np.array([[1e-3]])**2
+        self.r = np.array([[1e-3]])**2                  # current   [A]
 
         self.importdf()
         self.importmodel()
+        self.flags()
 
     def flags(self):
         self.showFinal = 1

@@ -14,7 +14,7 @@ class models:
 
     def h(self, x):
         x = self.hx @ x
-        x.reshape((2, 1))
+        # x.reshape((2, 1))
         return x
 
     def sigma(self, x, p):
