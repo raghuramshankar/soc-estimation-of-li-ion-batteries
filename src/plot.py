@@ -33,7 +33,7 @@ class plot:
         fig = plt.figure()
         f = fig.add_subplot(111)
         # f.plot(x_true_cat[0:, 0], x_true_cat[0:, 1], 'r', label='True Position')
-        f.plot(self.time[0:self.N+1], self.xEstCat[0:, 1]*100, 'b', label='Estimated SOC')
+        f.plot(self.time[0:self.N], self.xEstCat[0:, 1]*100, 'b', label='Estimated SOC')
         # f.plot(zCat[0:, 0], zCat[0:, 1], '+g', label='Noisy Measurements')
         f.set_xlabel('Time [s]')
         f.set_ylabel('SOC [%]')

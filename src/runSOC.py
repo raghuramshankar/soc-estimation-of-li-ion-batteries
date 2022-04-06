@@ -36,7 +36,7 @@ class runSOC(models, plot):
 
     def flags(self):
         self.showFinal = 1
-        self.showAnimation = 1
+        self.showAnimation = 0
         self.showEllipse = 0
 
     def importmodel(self):
