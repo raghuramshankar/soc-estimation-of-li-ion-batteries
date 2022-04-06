@@ -5,7 +5,7 @@ import math
 
 class models:
     def __init__(self):
-        self.dt = 0.01
+        self.dt = 0.1
 
     def f(self, x):
         x[0] = self.RC1 * x[0] + (1 - self.RC1) * self.z

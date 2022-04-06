@@ -7,7 +7,7 @@ import numpy as np
 class runSOC(models, plot):
     def __init__(self):
         models.__init__(self)
-        self.N = 5000
+        self.N = 500
 
         '''inital state mean'''
         self.x0 = np.array([[0.0],                      # current    [A]
@@ -36,7 +36,8 @@ class runSOC(models, plot):
 
     def flags(self):
         self.showFinal = 1
-        self.showAnimation = 0
+        self.showAnimation = 1
+        self.showEllipse = 0
 
     def importmodel(self):
         self.dfOCV = pd.read_csv('data/OCV--25degC--549_C20DisCh.csv')
@@ -92,8 +93,7 @@ class runSOC(models, plot):
             else:
                 show_final_flag = 0
             # x_true_cat = np.vstack((x_true_cat, np.transpose(x_true[0:2])))
+            self.postpross(i, xEst, pEst, show_final_flag)
             self.zCat = np.vstack((self.zCat, np.transpose(self.z[0:1])))
             self.xEstCat = np.vstack((self.xEstCat, np.transpose(xEst[0:2])))
-            # self.postpross(i, x_est, p_est, x_est_cat, z,
-                    # z_cat, vel_cat, est_vel_cat, self.showAnimation, self.show_ellipse, show_final_flag)
             xEst, pEst = self.cubatureKalmanFilter(xEst, pEst, self.z)
