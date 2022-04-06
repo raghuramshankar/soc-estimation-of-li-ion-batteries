@@ -9,7 +9,7 @@ class plot:
             plt.plot(self.time[0], self.z, 'g+')
             plt.plot(self.time[0], self.xEstCat[1], '.b')
         else:
-            plt.plot(self.time[0], self.z, 'g+')
+            plt.plot(self.time[i], self.z, 'g+')
             plt.plot(self.time[0:i+1], self.xEstCat[0:, 1], 'b')
         plt.grid(True)
         plt.pause(0.001)

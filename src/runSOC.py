@@ -7,7 +7,7 @@ import numpy as np
 class runSOC(models, plot):
     def __init__(self):
         models.__init__(self)
-        self.N = 500
+        self.N = 200
 
         '''inital state mean'''
         self.x0 = np.array([[0.0],                      # current    [A]
@@ -36,7 +36,7 @@ class runSOC(models, plot):
 
     def flags(self):
         self.showFinal = 1
-        self.showAnimation = 0
+        self.showAnimation = 1
         self.showEllipse = 0
 
     def importmodel(self):
