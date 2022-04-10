@@ -6,24 +6,30 @@ import pandas as pd
 class linearKF():
     def __init__(self, N):
         '''number of iterations'''
-        self.N = 200
+        self.N = N
 
         '''process noise covariance'''
-        self.sigmaW = 1
+        self.sigmaW = 0.01
 
         '''sensor noise covariance'''
-        self.sigmaV = 1
+        self.sigmaV = 0.01
+
+        '''define cell parameters'''
+        '''capacity [Ah]'''
+        self.Q = 5
+        '''equivalent series resistance [ohm]'''
+        self.R0 = 0.1
 
         '''plant definition matrices'''
-        '''x_k = 1.x_k-1 + 1.u_k-1'''
-        '''y_k = 1.x_k-1 + 0.u_k-1'''
+        '''z_k = z_k-1 - 1/(3600*Q)*I_k-1'''
+        '''volt_k = 3.5 + 0.7*z_k-1 - R0*I_k-1'''
         self.A = 1
-        self.B = 1
-        self.C = 1
-        self.D = 0
+        self.B = -1/(3600 * self.Q)
+        self.C = 0.7
+        self.D = -self.R0
 
         '''true system intial state'''
-        self.xTrue = 0
+        self.xTrue = 1.0
         '''kalman filter initial estimate'''
         self.xHat = 0
         '''kalman filter inital covariance'''
@@ -45,16 +51,18 @@ class linearKF():
         self.showEllipse = 0
 
     def genInputMeasurement(self, k):
-        self.u = 0.5 * np.random.randn(1) + np.cos(k/np.pi)
+        # self.u = 0.5 * np.random.randn(1) + np.cos(k/np.pi)
+        self.u = self.Q
         try:
             w = np.transpose(np.linalg.cholesky(self.sigmaW)) * \
                 np.random.randn(np.size(self.xTrue))
-            v = self.sigmaV * np.random.randn(np.size(self.C * self.xTrue))
+            v = np.transpose(np.linalg.cholesky(self.sigmaV)) * \
+                np.random.randn(self.C * np.size(self.xTrue))
         except:
             w = self.sigmaW * np.random.randn(np.size(self.xTrue))
-            v = self.sigmaV * np.random.randn(self.C * np.size(self.xTrue))
-        self.yTrue = self.C * self.xTrue + self.D * self.u + v
-        self.xTrue = self.A * self.xTrue + self.B * self.u + w
+            v = self.sigmaV * np.random.randn(np.size(self.C * self.xTrue))
+        self.yTrue = 3.5 + self.C * self.xTrue + self.D * self.u  # + w
+        self.xTrue = self.A * self.xTrue + self.B * self.u  # + v
 
     def iterKF(self):
         for k in range(self.N):
@@ -68,8 +76,8 @@ class linearKF():
             '''generate input and measurement'''
             self.genInputMeasurement(k)
 
-            '''KF step 1c: estimate system output'''
-            self.yHat = self.C * self.xHat + self.D * self.u
+            '''KF step 1c: estimate system output (after debias)'''
+            self.yHat = self.C * self.xHat + self.D * self.u + 3.5
 
             '''KF step 2a: compute kalman gain'''
             sigmaY = self.C * self.sigmaX * np.transpose(self.C) + self.sigmaV
@@ -89,22 +97,22 @@ class linearKF():
     def postpross(self):
         fig = plt.figure()
         f = fig.add_subplot(111)
-        f.plot(range(N), self.xStore[0, 1:], 'k+', label='True')
-        f.plot(range(N), self.xHatStore[0, :], 'b', label='Estimate')
-        f.plot(range(N), self.xHatStore[0, :] + np.sqrt(3) *
+        f.plot(range(self.N), self.xStore[0, 1:], 'k--', label='True')
+        f.plot(range(self.N), self.xHatStore[0, :], 'b', label='Estimate')
+        f.plot(range(self.N), self.xHatStore[0, :] + np.sqrt(3) *
                self.sigmaXStore[0, :], 'g--', label='Upper bound')
-        f.plot(range(N), self.xHatStore[0, :] - np.sqrt(3) *
+        f.plot(range(self.N), self.xHatStore[0, :] - np.sqrt(3) *
                self.sigmaXStore[0, :], 'g--', label='Lower bound')
         f.set_xlabel('Iteration')
-        f.set_ylabel('State')
-        f.set_title('Linear kalman filter generic model')
+        f.set_ylabel('State of Charge')
+        f.set_title('Linear kalman filter simple battery model')
         f.legend()
         plt.grid(True)
         plt.show()
 
 
 if __name__ == '__main__':
-    N = 200
+    N = 3600
     kalmanObj = linearKF(N)
     kalmanObj.iterKF()
     kalmanObj.postpross()
