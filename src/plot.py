@@ -46,7 +46,7 @@ class plot:
         if self.showAnimation == 1:
             self.plotAnimation(i)
             if self.showEllipse == 1:
-                self.plotEllipse(xEst[0:2], p_est)
+                self.plotEllipse(xEst[0:2], pEst)
         if show_final_flag == 1:
             # plot_final_3(xEstCat, zCat, velCat, estVelCat, i)
             self.plotFinal()
