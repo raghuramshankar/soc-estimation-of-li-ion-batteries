@@ -51,7 +51,7 @@ class linearKF():
         self.showEllipse = 0
 
     def genInputMeasurement(self, k):
-        # self.u = 0.5 * np.random.randn(1) + np.cos(k/np.pi)
+        # self.u = self.Q * np.random.randn(1)
         self.u = self.Q
         try:
             w = np.transpose(np.linalg.cholesky(self.sigmaW)) * \

@@ -23,7 +23,7 @@ class linearKF():
         self.D = 0
 
         '''true system intial state'''
-        self.xTrue = 0
+        self.xTrue = 100
         '''kalman filter initial estimate'''
         self.xHat = 0
         '''kalman filter inital covariance'''
