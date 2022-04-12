@@ -43,13 +43,6 @@ class linearKF():
         self.xHatStore = np.zeros((np.size(self.xHat), self.N))
         self.sigmaXStore = np.zeros((np.size(self.xHat)**2, self.N))
 
-        self.flags()
-
-    def flags(self):
-        self.showFinal = 1
-        self.showAnimation = 1
-        self.showEllipse = 0
-
     def genInputMeasurement(self, k):
         # self.u = self.Q * np.random.randn(1)
         self.u = self.Q

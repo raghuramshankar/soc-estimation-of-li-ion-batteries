@@ -6,7 +6,7 @@ import pandas as pd
 class linearKF():
     def __init__(self, N):
         '''number of iterations'''
-        self.N = 200
+        self.N = N
 
         '''process noise covariance'''
         self.sigmaW = 1
@@ -36,13 +36,6 @@ class linearKF():
         self.xStore[:, 0] = self.xTrue
         self.xHatStore = np.zeros((np.size(self.xHat), self.N))
         self.sigmaXStore = np.zeros((np.size(self.xHat)**2, self.N))
-
-        self.flags()
-
-    def flags(self):
-        self.showFinal = 1
-        self.showAnimation = 1
-        self.showEllipse = 0
 
     def genInputMeasurement(self, k):
         self.u = 0.5 * np.random.randn(1) + np.cos(k/np.pi)
