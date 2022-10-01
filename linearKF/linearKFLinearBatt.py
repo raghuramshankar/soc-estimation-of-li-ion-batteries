@@ -9,10 +9,10 @@ class linearKF():
         self.N = N
 
         '''process noise covariance'''
-        self.sigmaW = 0.01
+        self.sigmaW = 0.001
 
         '''sensor noise covariance'''
-        self.sigmaV = 0.01
+        self.sigmaV = 0.001
 
         '''define cell parameters'''
         '''capacity [Ah]'''
@@ -33,7 +33,7 @@ class linearKF():
         '''kalman filter initial estimate'''
         self.xHat = 0
         '''kalman filter inital covariance'''
-        self.sigmaX = 0
+        self.sigmaX = -1
         '''inital driving input'''
         self.u = 0
 
@@ -44,8 +44,8 @@ class linearKF():
         self.sigmaXStore = np.zeros((np.size(self.xHat)**2, self.N))
 
     def genInputMeasurement(self, k):
-        # self.u = self.Q * np.random.randn(1)
-        self.u = self.Q
+        self.u = self.Q + 0.001 * np.random.randn(1)
+        # self.u = self.Q
         try:
             w = np.transpose(np.linalg.cholesky(self.sigmaW)) * \
                 np.random.randn(np.size(self.xTrue))
@@ -54,8 +54,8 @@ class linearKF():
         except:
             w = self.sigmaW * np.random.randn(np.size(self.xTrue))
             v = self.sigmaV * np.random.randn(np.size(self.C * self.xTrue))
-        self.yTrue = 3.5 + self.C * self.xTrue + self.D * self.u  # + w
-        self.xTrue = self.A * self.xTrue + self.B * self.u  # + v
+        self.yTrue = 3.5 + self.C * self.xTrue + self.D * self.u + w
+        self.xTrue = self.A * self.xTrue + self.B * self.u + v
 
     def iterKF(self):
         for k in range(self.N):
