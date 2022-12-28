@@ -10,7 +10,7 @@ class extendedKFBatt:
 
         """initial estimates"""
         """states: soc, iRC1, iRC2"""
-        self.xHat = np.array([np.array([1.0]), np.array([0.0]), np.array([0.0])])
+        self.xHat = np.array([np.array([0.0]), np.array([0.0]), np.array([0.0])])
 
         """initial covariance"""
         self.sigmaX = np.diag([1e-5, 1e-5, 1e-5])
@@ -224,6 +224,13 @@ class extendedKFBatt:
                 "dOCVSOC": self.dOCVSOCStore,
                 "yHatKF": self.yHatKFStore,
             }
+        )
+
+        # print("SOC prediction CRMSE = ", np.sqrt(np.mean(np.square(self.storeDF["SOC"] - 1.0 - np.cumsum(self.storeDF["I"]))),
+        # ))
+        print(
+            "Voltage prediction CRMSE = ",
+            np.sqrt(np.mean(np.square(self.storeDF["yHatKF"] - self.storeDF["V"]))),
         )
 
 
