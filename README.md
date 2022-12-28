@@ -8,10 +8,15 @@
 ## Battery Models Used
 ### RC2 model:
 - ![rc2](images/rc2.jpg)
+
+| r0       | r1       | c1       | r2           | c2          |
+|----------|----------|----------|--------------|-------------|
+| 0.019414 | 0.656103 | 0.014601 | 82719.773966 | 1360.246886 |
+
 - Some model shortcomings:
     - One cell parameter set is used for the entire SOC range.
     - There is no hysteresis component in this model, thus Irc1 compensates for this.
-    - SOC values drift from true value due to the above as well.
+    - SOC values drift from true values due to the above as well.
 
 ## OCV-SOC curve and cell modelling
 - Refer to [Data Driven Modelling of Li-ion Batteries](https://github.com/raghuramshankar/data-driven-modelling-of-li-ion-batteries)
