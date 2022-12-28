@@ -29,3 +29,6 @@
 - ![sigma](images/sigma.png)
 - ![innovation](images/innovation.png)
 - ![docvsoc](images/docvsoc.png)
+
+## License
+[MIT License](LICENSE)
