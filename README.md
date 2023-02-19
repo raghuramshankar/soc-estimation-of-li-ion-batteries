@@ -9,9 +9,9 @@
 ### RC2 model:
 - ![rc2](images/rc2.jpg)
 
-| r0       | r1       | c1       | r2           | c2          |
+| r0       | r1       | r2       | tau1         | tau2        |
 |----------|----------|----------|--------------|-------------|
-| 0.019414 | 0.656103 | 0.014601 | 82719.773966 | 1360.246886 |
+| 0.019414 | 0.014601 | 0.656103 | 19.860964    | 54272.69185 |
 
 - Some model shortcomings:
     - One cell parameter set is used for the entire SOC range.
