@@ -241,6 +241,12 @@ class extendedKFBatt:
             }
         )
 
+        """get true SOC"""
+        self.storeDF["trueSOC"] = (
+            self.df["Capacity"] / self.capacityOCV
+            + self.SOCOCV[np.argmin(abs(self.voltOCV - self.df["Voltage"][1]))]
+        )
+
 
 if __name__ == "__main__":
     if "__ipython__":
