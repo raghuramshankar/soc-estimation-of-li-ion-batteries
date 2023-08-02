@@ -1,10 +1,15 @@
 # %%
 import pandas as pd
 import numpy as np
+import os
+import sys
 
 
 class extendedKFBatt:
-    def __init__(self, N, filename):
+    def __init__(self, N):
+        """add parent path"""
+        self.parentPath = os.getcwd()
+
         """number of iterations"""
         self.N = N
 
@@ -24,6 +29,7 @@ class extendedKFBatt:
         """sensor noise covariance"""
         self.sigmaV = np.array([np.array([1e-3])])
 
+    def runKF(self, filename):
         """import dataframe"""
         self.importdf(filename)
         self.importmodel()
@@ -70,13 +76,20 @@ class extendedKFBatt:
             }
         )
 
+        """iterate through KF"""
+        self.iterKF()
+
     def importmodel(self):
-        self.dfOCV = pd.read_csv("data/OCV--25degC--549_C20DisCh.csv")
+        self.dfOCV = pd.read_csv(
+            self.parentPath + "/data/OCV--25degC--549_C20DisCh.csv"
+        )
         self.timeOCV = self.dfOCV["time"].to_numpy()
         self.voltOCV = self.dfOCV["OCV"].to_numpy()
         self.SOCOCV = self.dfOCV["SOC"].to_numpy()
         self.capacityOCV = self.dfOCV["disCapacity"].to_numpy()[0]
-        self.dfCellParamsOpti = pd.read_csv("data/CellParams--25degC--551_Mixed1.csv")
+        self.dfCellParamsOpti = pd.read_csv(
+            self.parentPath + "/data/CellParams--25degC--551_Mixed1.csv"
+        )
         self.r0 = self.dfCellParamsOpti["r0"].to_numpy()
         self.r1 = self.dfCellParamsOpti["r1"].to_numpy()
         self.r2 = self.dfCellParamsOpti["r2"].to_numpy()
@@ -86,7 +99,9 @@ class extendedKFBatt:
         self.RC2 = np.exp(-self.dt / (self.r2 * self.c2))
 
     def importdf(self, filename):
-        self.df = pd.read_csv("data/" + filename, skiprows=28, dtype=str)
+        self.df = pd.read_csv(
+            self.parentPath + "/data/" + filename, skiprows=28, dtype=str
+        )
         self.df = self.df.loc[:, ~self.df.columns.str.contains("^Unnamed")]
         self.df = self.df.drop(0)
         self.df = self.df.apply(pd.to_numeric, errors="ignore")
@@ -226,18 +241,21 @@ class extendedKFBatt:
             }
         )
 
-        # print("SOC prediction CRMSE = ", np.sqrt(np.mean(np.square(self.storeDF["SOC"] - 1.0 - np.cumsum(self.storeDF["I"]))),
-        # ))
-        print(
-            "Voltage prediction CRMSE = ",
-            np.sqrt(np.mean(np.square(self.storeDF["yHatKF"] - self.storeDF["V"]))),
-        )
-
 
 if __name__ == "__main__":
-    N = np.inf
-    filename = "551_LA92.csv"
-    obj = extendedKFBatt(N, filename)
-    obj.iterKF()
+    if "__ipython__":
+        # add base folder path
+        sys.path.append(os.path.dirname(os.path.realpath(os.getcwd())))
+        N = np.inf
+        filename = "551_LA92.csv"
+        obj = extendedKFBatt(N)
+        # change parent path to base folder
+        obj.parentPath = os.path.dirname(os.getcwd())
+        obj.runKF(filename)
+    else:
+        N = np.inf
+        filename = "551_LA92.csv"
+        obj = extendedKFBatt(N)
+        obj.runKF(filename)
 
     print("Done")
