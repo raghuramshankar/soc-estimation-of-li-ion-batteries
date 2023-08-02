@@ -15,7 +15,7 @@ class extendedKFBatt:
 
         """initial estimates"""
         """states: soc, iRC1, iRC2"""
-        self.xHat = np.array([np.array([0.0]), np.array([0.0]), np.array([0.0])])
+        self.xHat = np.array([np.array([1.0]), np.array([0.0]), np.array([0.0])])
 
         """initial covariance"""
         self.sigmaX = np.diag([1e-5, 1e-5, 1e-5])
